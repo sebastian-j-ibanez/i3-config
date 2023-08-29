@@ -1,17 +1,17 @@
 # i3 config file (v4)
-#
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-#font pango:monospace 8
-font xft:Hack Nerd Font 8
+# Backup: font pango:monospace 8
+font xft:Hack Nerd Font 12
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:DejaVu Sans Mono 8
+font pango:Hack Nerd Font 12
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -22,7 +22,7 @@ exec --no-startup-id dex-autostart --autostart --environment i3
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.lock.sh --nofork
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -38,23 +38,23 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
-# move tiling windows via drag & drop by left-clicking into the title bar,
-# or left-clicking anywhere into the window while holding the floating modifier.
-tiling_drag modifier titlebar
-
 # start a terminal
 bindsym $mod+Return exec /usr/bin/kitty
 
 # kill focused window
 bindsym $mod+q kill
 
-# start dmenu (a program launcher)
+# start rofi (a program launcher)
 bindsym $mod+d exec --no-startup-id rofi -show "drun" -show-icons
 # A more modern dmenu replacement is rofi:
 # bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
+
+# change brightness (Next == PageDown and Prior == PageUp)
+bindsym $mod+Next exec brightnessctl s +10%
+bindsym $mod+Prior exec brightnessctl s 10%-
 
 # change focus
 bindsym $mod+h focus left
@@ -177,18 +177,19 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# Startup programs:
+# autorandr (display manager)
+# feh (wallpaper manager)
+# picom (compositor)
+# polybar (menu bar)
+exec_always autorandr --load profile1
+exec_always feh --bg-fill ~/Downloads/space-station.jpg
+exec_always --no-startup-id ~/.config/picom/launch.sh
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 
-# Startup programs:
-exec_always autorandr --load profile1
-exec_always feh --bg-fill ~/Pictures/Wallpapers/Horizontal/mark-autumns-Ssr26I0QWVY-unsplash.jpg ~/Pictures/Wallpapers/Horizontal/3d-geo.jpg
-exec_always --no-startup-id ~/.config/picom/launch.sh
-
 # Gaps
-gaps inner 6
-gaps outer 6
+gaps inner 4
+gaps outer 4
 
 # Disable window titlebar
 for_window [class="^.*"] border pixel 2
